@@ -250,8 +250,8 @@ ${related.map(r=>`<a href="${r.slug}.html" class="converter-card"><div class="co
 </nav>
 <p class="footer-legal">© 2025 Osmium · MIT License</p>
 </div></footer>
-<script src="${rel}ffmpeg/ffmpeg.js"></script>
-<script src="${rel}ffmpeg/ffmpeg-util.js"></script>
+<script src="/ffmpeg/ffmpeg.js"></script>
+<script src="/ffmpeg/ffmpeg-util.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
 <script src="${rel}app.js"></script>
