@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Convium – Universal File Converter | by Osmium</title>
+  <meta name="description" content="Convert video, audio, images, documents, and archives entirely in your browser. No uploads, no server. 100% private and free." />
+  <meta name="keywords" content="file converter, online converter, video converter, audio converter, image converter, document converter, no upload, private, browser-based" />
+  <meta property="og:title" content="Convium – Universal File Converter" />
+  <meta property="og:description" content="Convert any file, entirely in your browser. No server. No uploads. Powered by WebAssembly." />
+  <meta property="og:type" content="website" />
+  <link rel="canonical" href="https://convium.osmium.app/" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Convium",
+    "description": "Universal file converter running entirely in the browser",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0" }
+  }
+  </script>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     AD BLOCK NOTICE
+═══════════════════════════════════════════════ -->
+<div id="adblock-notice" class="adblock-notice hidden">
+  <div class="adblock-inner">
+    <span class="adblock-icon">🛡️</span>
+    <div class="adblock-text">
+      <strong>Ad blocker detected</strong>
+      <p>Convium is free and ad-supported. Please consider whitelisting us — it keeps the lights on. No trackers, just static ads.</p>
+    </div>
+    <button class="adblock-dismiss" onclick="dismissAdblock()">Got it</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <a href="index.html" class="logo-link">
+        <span class="logo-word">convium</span>
+        <span class="logo-tag">by Osmium</span>
+      </a>
+    </div>
+
+    <div class="header-center">
+      <nav class="type-nav">
+        <a href="#" class="type-link active" data-type="all">All</a>
+        <a href="video/index.html" class="type-link">Video</a>
+        <a href="audio/index.html" class="type-link">Audio</a>
+        <a href="image/index.html" class="type-link">Image</a>
+        <a href="docs/index.html" class="type-link">Docs</a>
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <div class="theme-switcher">
+        <button class="theme-btn" data-theme="light" onclick="setTheme('light')" title="Light mode">☀️</button>
+        <button class="theme-btn active" data-theme="dark" onclick="setTheme('dark')" title="Dark mode">🌙</button>
+        <button class="theme-btn" data-theme="system" onclick="setTheme('system')" title="System">⚙️</button>
+      </div>
+      <div class="privacy-badge" data-tooltip="Your files never leave your device. All processing happens locally in WebAssembly.">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>On‑Device · Secure</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="hero-title">Convert <em>anything</em>.<br/>Upload <em>nothing</em>.</h1>
+    <p class="hero-sub">Video · Audio · Images · Documents · Archives — all converted in your browser via WebAssembly. Zero server contact. Zero leaks.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     AD SLOT TOP
+═══════════════════════════════════════════════ -->
+<div class="ad-slot ad-slot--top">
+  <div class="ad-placeholder" id="ad-top">
+    <!-- Google AdSense: replace with real unit -->
+    <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXX" data-ad-slot="XXXXX" data-ad-format="auto"></ins> -->
+    <span class="ad-label">Advertisement</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     WASM LOADING SKELETON
+═══════════════════════════════════════════════ -->
+<div id="wasm-loader" class="wasm-loader">
+  <div class="skeleton-bar" style="width:60%"></div>
+  <div class="skeleton-bar" style="width:40%"></div>
+  <p class="loader-text">Initializing WebAssembly engines<span class="dots"></span></p>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MAIN APP
+═══════════════════════════════════════════════ -->
+<main id="app" class="app hidden">
+
+  <!-- ── DROP ZONE ────────────────────────────── -->
+  <section class="drop-section">
+    <div id="drop-zone" class="drop-zone" tabindex="0" role="button" aria-label="Drop files here or click to browse">
+      <div class="drop-content">
+        <div class="drop-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <p class="drop-main">Drop files or folders here</p>
+        <p class="drop-sub">or <button class="link-btn" id="browse-btn">browse</button> to select</p>
+        <p class="drop-hint">Supports video, audio, images, documents, archives</p>
+      </div>
+      <div class="drop-overlay">
+        <span>Release to add files</span>
+      </div>
+    </div>
+    <input type="file" id="file-input" multiple hidden />
+  </section>
+
+  <!-- ── CONTROLS BAR ──────────────────────────── -->
+  <section class="controls-bar" id="controls-bar">
+    <div class="controls-left">
+      <!-- Output format -->
+      <div class="control-group">
+        <label class="control-label">Convert to</label>
+        <select id="format-select" class="control-select">
+          <optgroup label="─── Video ───">
+            <option value="mp4">MP4 – MPEG-4 Video</option>
+            <option value="mkv">MKV – Matroska</option>
+            <option value="webm">WebM – VP9/AV1</option>
+            <option value="mov">MOV – QuickTime</option>
+            <option value="avi">AVI – Audio Video Interleave</option>
+            <option value="flv">FLV – Flash Video</option>
+            <option value="ogv">OGV – Ogg Video</option>
+            <option value="3gp">3GP – Mobile Video</option>
+            <option value="3g2">3G2 – Mobile Video 2</option>
+            <option value="ts">TS – MPEG Transport Stream</option>
+            <option value="m2ts">M2TS – Blu-ray Stream</option>
+            <option value="mts">MTS – AVCHD</option>
+            <option value="vob">VOB – DVD Video</option>
+            <option value="wmv">WMV – Windows Media</option>
+            <option value="asf">ASF – Advanced Streaming</option>
+            <option value="rm">RM – RealMedia</option>
+            <option value="rmvb">RMVB – RealMedia VBR</option>
+            <option value="divx">DIVX – DivX Video</option>
+            <option value="m4v">M4V – iTunes Video</option>
+            <option value="f4v">F4V – Flash MP4</option>
+            <option value="swf">SWF – Flash Animation (extract)</option>
+            <option value="gif">GIF – Animated GIF</option>
+            <option value="apng">APNG – Animated PNG</option>
+            <option value="mxf">MXF – Material Exchange</option>
+            <option value="dv">DV – Digital Video</option>
+            <option value="nut">NUT – NUT Container</option>
+          </optgroup>
+          <optgroup label="─── Audio ───">
+            <option value="mp3">MP3 – MPEG Audio Layer 3</option>
+            <option value="aac">AAC – Advanced Audio Coding</option>
+            <option value="wav">WAV – Waveform Audio</option>
+            <option value="flac">FLAC – Lossless Audio</option>
+            <option value="ogg">OGG – Ogg Vorbis</option>
+            <option value="m4a">M4A – MPEG-4 Audio</option>
+            <option value="opus">OPUS – Opus Audio</option>
+            <option value="wma">WMA – Windows Media Audio</option>
+            <option value="aiff">AIFF – Apple Audio</option>
+            <option value="aif">AIF – Apple Audio</option>
+            <option value="au">AU – Sun Audio</option>
+            <option value="ra">RA – RealAudio</option>
+            <option value="amr">AMR – Adaptive Multi-Rate</option>
+            <option value="ac3">AC3 – Dolby Digital</option>
+            <option value="eac3">EAC3 – Dolby Digital Plus</option>
+            <option value="dts">DTS – DTS Audio</option>
+            <option value="mka">MKA – Matroska Audio</option>
+            <option value="oga">OGA – Ogg Audio</option>
+            <option value="spx">SPX – Speex Audio</option>
+            <option value="caf">CAF – Core Audio</option>
+            <option value="gsm">GSM – GSM Audio</option>
+            <option value="tta">TTA – True Audio</option>
+            <option value="wv">WV – WavPack</option>
+            <option value="mpc">MPC – Musepack</option>
+            <option value="mp2">MP2 – MPEG Audio Layer 2</option>
+            <option value="mp1">MP1 – MPEG Audio Layer 1</option>
+            <option value="mid">MIDI – Musical Instrument Digital</option>
+          </optgroup>
+          <optgroup label="─── Image ───">
+            <option value="jpg">JPEG – Joint Photographic</option>
+            <option value="png">PNG – Portable Network Graphics</option>
+            <option value="webp">WebP – Google WebP</option>
+            <option value="gif">GIF – Graphics Interchange</option>
+            <option value="bmp">BMP – Bitmap</option>
+            <option value="avif">AVIF – AV1 Image</option>
+            <option value="tiff">TIFF – Tagged Image File</option>
+            <option value="ico">ICO – Windows Icon</option>
+            <option value="svg">SVG – Scalable Vector Graphics</option>
+            <option value="ppm">PPM – Portable Pixmap</option>
+            <option value="pgm">PGM – Portable Graymap</option>
+            <option value="pbm">PBM – Portable Bitmap</option>
+            <option value="tga">TGA – Truevision TARGA</option>
+            <option value="xbm">XBM – X Bitmap</option>
+            <option value="wbmp">WBMP – Wireless BMP</option>
+          </optgroup>
+          <optgroup label="─── Document ───">
+            <option value="pdf">PDF – Portable Document</option>
+            <option value="docx">DOCX – Word Document</option>
+            <option value="doc">DOC – Word 97-2003</option>
+            <option value="odt">ODT – OpenDocument Text</option>
+            <option value="rtf">RTF – Rich Text Format</option>
+            <option value="txt">TXT – Plain Text</option>
+            <option value="md">MD – Markdown</option>
+            <option value="html">HTML – HyperText Markup</option>
+            <option value="htm">HTM – HyperText Markup</option>
+            <option value="epub">EPUB – Electronic Publication</option>
+            <option value="tex">TEX – LaTeX Source</option>
+            <option value="rst">RST – reStructuredText</option>
+            <option value="org">ORG – Org-mode</option>
+            <option value="adoc">ADOC – AsciiDoc</option>
+            <option value="wiki">WIKI – MediaWiki</option>
+            <option value="csv">CSV – Comma Separated Values</option>
+            <option value="tsv">TSV – Tab Separated Values</option>
+            <option value="json">JSON – JavaScript Object Notation</option>
+            <option value="xml">XML – Extensible Markup Language</option>
+            <option value="yaml">YAML – YAML Ain't Markup</option>
+          </optgroup>
+          <optgroup label="─── Archive ───">
+            <option value="zip">ZIP – ZIP Archive</option>
+            <option value="tar">TAR – Tape Archive</option>
+            <option value="gz">GZ – GNU Zip</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <!-- Rename pattern -->
+      <div class="control-group">
+        <label class="control-label" title="%N=name, %D=date, %C=counter">Rename pattern</label>
+        <input type="text" id="rename-pattern" class="control-input" value="%N" placeholder="%N_%D" />
+      </div>
+
+      <!-- Profile -->
+      <div class="control-group">
+        <label class="control-label">Profile</label>
+        <select id="profile-select" class="control-select">
+          <option value="">None</option>
+          <option value="instagram">Instagram</option>
+          <option value="youtube">YouTube</option>
+          <option value="twitter">Twitter/X</option>
+          <option value="print">Print PDF</option>
+          <option value="web">Web Optimized</option>
+        </select>
+        <button class="icon-btn" id="save-profile-btn" title="Save current settings as profile">💾</button>
+      </div>
+    </div>
+
+    <div class="controls-right">
+      <button class="btn btn--ghost" id="clear-all-btn">Clear All</button>
+      <button class="btn btn--primary" id="convert-all-btn" disabled>
+        <span class="btn-text">Convert All</span>
+        <span class="btn-count" id="file-count-badge">0</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ── ADVANCED SETTINGS ─────────────────────── -->
+  <section class="advanced-panel" id="advanced-panel">
+    <button class="advanced-toggle" id="advanced-toggle">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M20 12h2M2 12H4M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/></svg>
+      Advanced Settings
+      <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+
+    <div class="advanced-body" id="advanced-body">
+      <!-- Video Settings -->
+      <div class="settings-group" id="settings-video">
+        <h4 class="settings-group-title">Video</h4>
+        <div class="settings-grid">
+          <div class="setting-item">
+            <label>Codec</label>
+            <select id="v-codec">
+              <option value="libx264">H.264</option>
+              <option value="libx265">H.265/HEVC</option>
+              <option value="libvpx-vp9">VP9</option>
+              <option value="copy">Copy (no re-encode)</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Bitrate (kbps)</label>
+            <input type="number" id="v-bitrate" placeholder="auto" min="100" max="50000" />
+          </div>
+          <div class="setting-item">
+            <label>Frame Rate (fps)</label>
+            <input type="number" id="v-fps" placeholder="auto" min="1" max="120" />
+          </div>
+          <div class="setting-item">
+            <label>Resolution</label>
+            <select id="v-res">
+              <option value="">Original</option>
+              <option value="scale=1920:-2">1080p</option>
+              <option value="scale=1280:-2">720p</option>
+              <option value="scale=854:-2">480p</option>
+              <option value="scale=640:-2">360p</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Trim Start (s)</label>
+            <input type="number" id="v-trim-start" placeholder="0" min="0" />
+          </div>
+          <div class="setting-item">
+            <label>Trim End (s)</label>
+            <input type="number" id="v-trim-end" placeholder="full" min="0" />
+          </div>
+          <div class="setting-item">
+            <label>Watermark text</label>
+            <input type="text" id="v-watermark" placeholder="optional text" />
+          </div>
+          <div class="setting-item checkbox-item">
+            <label><input type="checkbox" id="v-strip-meta" /> Strip Metadata</label>
+            <label><input type="checkbox" id="v-extract-audio" /> Extract Audio Only</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Audio Settings -->
+      <div class="settings-group" id="settings-audio">
+        <h4 class="settings-group-title">Audio</h4>
+        <div class="settings-grid">
+          <div class="setting-item">
+            <label>Codec</label>
+            <select id="a-codec">
+              <option value="libmp3lame">MP3</option>
+              <option value="aac">AAC</option>
+              <option value="libvorbis">Vorbis</option>
+              <option value="flac">FLAC</option>
+              <option value="copy">Copy</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Bitrate (kbps)</label>
+            <select id="a-bitrate">
+              <option value="128k">128k</option>
+              <option value="192k" selected>192k</option>
+              <option value="256k">256k</option>
+              <option value="320k">320k</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Sample Rate</label>
+            <select id="a-samplerate">
+              <option value="44100">44100 Hz</option>
+              <option value="48000">48000 Hz</option>
+              <option value="22050">22050 Hz</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Channels</label>
+            <select id="a-channels">
+              <option value="2">Stereo</option>
+              <option value="1">Mono</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Image Settings -->
+      <div class="settings-group" id="settings-image">
+        <h4 class="settings-group-title">Image</h4>
+        <div class="settings-grid">
+          <div class="setting-item">
+            <label>Width (px)</label>
+            <input type="number" id="img-width" placeholder="auto" min="1" />
+          </div>
+          <div class="setting-item">
+            <label>Height (px)</label>
+            <input type="number" id="img-height" placeholder="auto" min="1" />
+          </div>
+          <div class="setting-item">
+            <label>Quality (0–100)</label>
+            <input type="range" id="img-quality" min="1" max="100" value="85" />
+            <output for="img-quality" id="img-quality-val">85</output>
+          </div>
+          <div class="setting-item checkbox-item">
+            <label><input type="checkbox" id="img-aspect" checked /> Maintain Aspect Ratio</label>
+            <label><input type="checkbox" id="img-exif" checked /> Remove EXIF</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Document Settings -->
+      <div class="settings-group" id="settings-doc">
+        <h4 class="settings-group-title">Document</h4>
+        <div class="settings-grid">
+          <div class="setting-item">
+            <label>Page Size</label>
+            <select id="doc-pagesize">
+              <option value="A4">A4</option>
+              <option value="letter">Letter</option>
+              <option value="A3">A3</option>
+              <option value="legal">Legal</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Margin</label>
+            <select id="doc-margin">
+              <option value="normal">Normal</option>
+              <option value="narrow">Narrow</option>
+              <option value="wide">Wide</option>
+              <option value="none">None</option>
+            </select>
+          </div>
+          <div class="setting-item checkbox-item">
+            <label><input type="checkbox" id="doc-pdf-pass" /> Password-protect PDF</label>
+          </div>
+          <div class="setting-item" id="doc-pass-wrap" style="display:none">
+            <label>PDF Password</label>
+            <input type="password" id="doc-password" placeholder="••••••" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FILE QUEUE ─────────────────────────────── -->
+  <section class="queue-section" id="queue-section">
+    <div class="queue-header">
+      <h3 class="queue-title">File Queue</h3>
+      <div class="queue-actions">
+        <span id="queue-stats" class="queue-stats"></span>
+      </div>
+    </div>
+
+    <!-- OVERALL PROGRESS -->
+    <div class="batch-progress" id="batch-progress" style="display:none">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="batch-bar"></div>
+      </div>
+      <span class="progress-label" id="batch-label">0%</span>
+    </div>
+
+    <ul class="file-list" id="file-list" aria-label="File queue"></ul>
+
+    <div class="queue-empty" id="queue-empty">
+      <p>No files yet — drop some above ☝️</p>
+    </div>
+  </section>
+
+  <!-- ── CONVERSION HISTORY ─────────────────────── -->
+  <section class="history-section" id="history-section">
+    <div class="history-header">
+      <h3 class="history-title">Recent Conversions</h3>
+      <button class="btn btn--ghost btn--sm" id="clear-history-btn">Clear history</button>
+    </div>
+    <ul class="history-list" id="history-list"></ul>
+    <div class="history-empty" id="history-empty"><p>Nothing here yet.</p></div>
+  </section>
+
+</main><!-- /#app -->
+
+<!-- ── MOBILE CONVERT BUTTON ──────────────────── -->
+<div class="mobile-fab" id="mobile-fab" style="display:none">
+  <button class="btn btn--primary btn--fab" id="mobile-convert-btn" disabled>Convert All</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     AD SLOT BOTTOM
+═══════════════════════════════════════════════ -->
+<div class="ad-slot ad-slot--bottom">
+  <div class="ad-placeholder" id="ad-bottom">
+    <span class="ad-label">Advertisement</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-badge">100% client‑side · No uploads · <strong>Convium by Osmium</strong></p>
+    <nav class="footer-links">
+      <a href="video/index.html">Video</a>
+      <a href="audio/index.html">Audio</a>
+      <a href="image/index.html">Image</a>
+      <a href="docs/index.html">Docs</a>
+    </nav>
+    <p class="footer-legal">© 2025 Osmium · MIT License</p>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════
+     SCRIPTS — FFmpeg UMD (no Worker CORS issues)
+═══════════════════════════════════════════════ -->
+<script src="./ffmpeg/ffmpeg.js"></script>
+<script src="./ffmpeg/ffmpeg-util.js"></script>
+
+<!-- JSZip -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<!-- browser-image-compression -->
+<script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+
+<!-- Main App -->
+<script src="app.js"></script>
+
+<!-- AdSense (replace with real publisher ID) -->
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXX" crossorigin="anonymous"></script> -->
+
+</body>
+</html>
