@@ -159,7 +159,7 @@ async function initFFmpeg() {
     //  2. Otherwise fall back to direct unpkg URLs
     //     (works fine on HTTP/HTTPS without SharedArrayBuffer requirement
     //      when using the single-threaded core build)
-    const BASE = '/ffmpeg';
+    const BASE = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
 
     let loadConfig;
 
