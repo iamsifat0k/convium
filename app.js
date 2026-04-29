@@ -159,9 +159,8 @@ async function initFFmpeg() {
     console.log('[Convium] Using toBlobURL for all core assets (CORS-safe)');
 
     const loadConfig = {
-      coreURL:   await toBlobURL(`${BASE}/ffmpeg-core.js`,       'text/javascript'),
-      wasmURL:   await toBlobURL(`${BASE}/ffmpeg-core.wasm`,     'application/wasm'),
-      workerURL: await toBlobURL(`${BASE}/ffmpeg-core.worker.js`, 'text/javascript'),
+      coreURL: await toBlobURL(`${BASE}/ffmpeg-core.js`,   'text/javascript'),
+      wasmURL: await toBlobURL(`${BASE}/ffmpeg-core.wasm`, 'application/wasm'),
     };
 
     await state.ffmpeg.load(loadConfig);
