@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ODT to CSV Converter – Free, No Upload | Convium</title>
+<meta name="description" content="Convert ODT to CSV free online. Convert ODT documents to CSV. Formatting, metadata, and structure preserved where possible. 100% browser-based, no uploads, no registration.">
+<meta name="keywords" content="odt to csv converter, convert odt to csv, free online odt converter, no upload">
+<link rel="canonical" href="https://convium.osmium.app/docs/odt-to-csv.html">
+<meta property="og:title" content="ODT to CSV – Convium">
+<meta property="og:description" content="Convert ODT documents to CSV. Formatting, metadata, and structure preserved where possible.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"ODT to CSV Converter","description":"Convert ODT documents to CSV. Formatting, metadata, and structure preserved where possible.","applicationCategory":"UtilitiesApplication","offers":{"@type":"Offer","price":"0"}}</script>
+</head>
+<body>
+<header class="site-header"><div class="header-inner">
+<div class="brand"><a href="../index.html" class="logo-link"><span class="logo-word">convium</span><span class="logo-tag">by Osmium</span></a></div>
+<div class="header-center"><nav class="type-nav"><a href="../index.html" class="type-link">All</a><a href="../video/index.html" class="type-link">Video</a><a href="../audio/index.html" class="type-link">Audio</a><a href="../image/index.html" class="type-link">Image</a><a href="../docs/index.html" class="type-link active">Docs</a><a href="../archives/index.html" class="type-link">Archives</a></nav></div>
+<div class="header-right">
+<div class="theme-switcher">
+<button class="theme-btn" data-theme="light" onclick="setTheme('light')" title="Light">☀️</button>
+<button class="theme-btn" data-theme="dark" onclick="setTheme('dark')" title="Dark">🌙</button>
+<button class="theme-btn" data-theme="system" onclick="setTheme('system')" title="System">⚙️</button>
+</div>
+<div class="privacy-badge" data-tooltip="Your files never leave your device. All processing is local via WebAssembly.">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+On&#8209;Device&nbsp;·&nbsp;Secure
+</div>
+</div>
+</div></header>
+<div class="ad-slot" style="max-width:900px;margin:0 auto"><div class="ad-placeholder"><span class="ad-label">Advertisement</span></div></div>
+<div style="max-width:900px;margin:0 auto;padding:16px 20px 0">
+<p class="breadcrumb"><a href="../index.html">Home</a> › <a href="index.html">Docs</a> › ODT to CSV</p>
+</div>
+<section style="max-width:900px;margin:0 auto;padding:16px 20px 20px">
+<h1 style="font-family:var(--font-display);font-size:clamp(24px,4vw,40px);margin-bottom:8px">
+📄 Convert <em style="color:var(--accent);font-style:italic">ODT</em> to CSV
+</h1>
+<p style="color:var(--text-2);font-size:15px;max-width:600px">Convert ODT documents to CSV. Formatting, metadata, and structure preserved where possible.</p>
+</section>
+
+<div id="wasm-loader" class="wasm-loader">
+<div class="skeleton-bar" style="width:60%"></div><div class="skeleton-bar" style="width:40%"></div>
+<p class="loader-text">Initializing WebAssembly engines<span class="dots"></span></p>
+</div>
+<div id="app" class="app hidden" style="max-width:900px;margin:0 auto;padding:0 20px 80px;">
+<section class="drop-section">
+<div id="drop-zone" class="drop-zone" tabindex="0" role="button">
+<div class="drop-content">
+<div class="drop-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+<p class="drop-main">Drop ODT files here</p>
+<p class="drop-sub">or <button class="link-btn" id="browse-btn">browse</button> to select</p>
+<p class="drop-hint">Output: <strong>CSV</strong> · Any size · No upload</p>
+</div>
+<div class="drop-overlay"><span>Release to add files</span></div>
+</div>
+<input type="file" id="file-input" multiple hidden />
+</section>
+<section class="controls-bar" id="controls-bar">
+<div class="controls-left">
+<div class="control-group"><label class="control-label">Convert to</label><select id="format-select" class="control-select">
+<optgroup label="Video">
+<option value="mp4">MP4</option><option value="mkv">MKV</option><option value="webm">WebM</option>
+<option value="mov">MOV</option><option value="avi">AVI</option><option value="flv">FLV</option>
+<option value="ogv">OGV</option><option value="3gp">3GP</option><option value="ts">TS</option>
+<option value="wmv">WMV</option><option value="m4v">M4V</option><option value="vob">VOB</option>
+</optgroup>
+<optgroup label="Audio">
+<option value="mp3">MP3</option><option value="aac">AAC</option><option value="wav">WAV</option>
+<option value="flac">FLAC</option><option value="ogg">OGG</option><option value="m4a">M4A</option>
+<option value="opus">OPUS</option><option value="wma">WMA</option><option value="aiff">AIFF</option>
+</optgroup>
+<optgroup label="Image">
+<option value="jpg">JPEG</option><option value="png">PNG</option><option value="webp">WebP</option>
+<option value="gif">GIF</option><option value="bmp">BMP</option><option value="avif">AVIF</option>
+<option value="tiff">TIFF</option><option value="ico">ICO</option><option value="svg">SVG</option>
+</optgroup>
+<optgroup label="Document">
+<option value="pdf">PDF</option><option value="docx">DOCX</option><option value="odt">ODT</option>
+<option value="rtf">RTF</option><option value="txt">TXT</option><option value="md">Markdown</option>
+<option value="html">HTML</option><option value="csv">CSV</option><option value="json">JSON</option>
+<option value="xml">XML</option><option value="yaml">YAML</option>
+</optgroup>
+<optgroup label="Archive">
+<option value="zip">ZIP</option><option value="tar">TAR</option><option value="gz">GZ</option>
+</optgroup>
+</select></div>
+<div class="control-group">
+<label class="control-label" title="%N=name %D=date %C=counter">Rename pattern</label>
+<input type="text" id="rename-pattern" class="control-input" value="%N" placeholder="%N_%D" />
+</div>
+<div class="control-group">
+<label class="control-label">Profile</label>
+<select id="profile-select" class="control-select">
+<option value="">None</option><option value="instagram">Instagram</option>
+<option value="youtube">YouTube</option><option value="twitter">Twitter/X</option>
+<option value="print">Print PDF</option><option value="web">Web Optimized</option>
+</select>
+<button class="icon-btn" id="save-profile-btn" title="Save profile">💾</button>
+</div>
+</div>
+<div class="controls-right">
+<button class="btn btn--ghost" id="clear-all-btn">Clear All</button>
+<button class="btn btn--primary" id="convert-all-btn" disabled>
+<span class="btn-text">Convert All</span><span class="btn-count" id="file-count-badge">0</span>
+</button>
+</div>
+</section>
+<section class="advanced-panel">
+<button class="advanced-toggle" id="advanced-toggle">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M20 12h2M2 12H4M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/></svg>
+Advanced Settings
+<svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+</button>
+<div class="advanced-body" id="advanced-body">
+<div class="settings-group" id="settings-video"><h4 class="settings-group-title">Video</h4>
+<div class="settings-grid">
+<div class="setting-item"><label>Codec</label><select id="v-codec"><option value="libx264">H.264</option><option value="libx265">H.265/HEVC</option><option value="libvpx-vp9">VP9</option><option value="copy">Copy (lossless)</option></select></div>
+<div class="setting-item"><label>Bitrate (kbps)</label><input type="number" id="v-bitrate" placeholder="auto" min="100" max="50000"></div>
+<div class="setting-item"><label>Frame Rate (fps)</label><input type="number" id="v-fps" placeholder="auto" min="1" max="120"></div>
+<div class="setting-item"><label>Resolution</label><select id="v-res"><option value="">Original</option><option value="scale=1920:-2">1080p</option><option value="scale=1280:-2">720p</option><option value="scale=854:-2">480p</option></select></div>
+<div class="setting-item"><label>Trim Start (s)</label><input type="number" id="v-trim-start" placeholder="0" min="0"></div>
+<div class="setting-item"><label>Trim End (s)</label><input type="number" id="v-trim-end" placeholder="full" min="0"></div>
+</div>
+</div>
+<div class="settings-group" id="settings-audio"><h4 class="settings-group-title">Audio</h4>
+<div class="settings-grid">
+<div class="setting-item"><label>Codec</label><select id="a-codec"><option value="libmp3lame">MP3</option><option value="aac">AAC</option><option value="libvorbis">Vorbis</option><option value="flac">FLAC</option><option value="copy">Copy</option></select></div>
+<div class="setting-item"><label>Bitrate</label><select id="a-bitrate"><option value="128k">128k</option><option value="192k" selected>192k</option><option value="256k">256k</option><option value="320k">320k</option></select></div>
+<div class="setting-item"><label>Sample Rate</label><select id="a-samplerate"><option value="44100">44100 Hz</option><option value="48000">48000 Hz</option></select></div>
+</div>
+</div>
+<div class="settings-group" id="settings-image"><h4 class="settings-group-title">Image</h4>
+<div class="settings-grid">
+<div class="setting-item"><label>Width (px)</label><input type="number" id="img-width" placeholder="auto" min="1"></div>
+<div class="setting-item"><label>Quality (0-100)</label><input type="range" id="img-quality" min="1" max="100" value="85"><output id="img-quality-val">85</output></div>
+<div class="setting-item checkbox-item"><label><input type="checkbox" id="img-aspect" checked> Maintain Aspect Ratio</label></div>
+</div>
+</div>
+</div>
+</section>
+<section class="queue-section" id="queue-section">
+<div class="queue-header"><h3 class="queue-title">File Queue</h3><span id="queue-stats" class="queue-stats"></span></div>
+<div class="batch-progress" id="batch-progress" style="display:none">
+<div class="progress-bar-wrap"><div class="progress-bar" id="batch-bar"></div></div>
+<span class="progress-label" id="batch-label">0%</span>
+</div>
+<ul class="file-list" id="file-list"></ul>
+<div class="queue-empty" id="queue-empty"><p>No files yet — drop some above ☝️</p></div>
+</section>
+</div>
+<div class="mobile-fab" id="mobile-fab" style="display:none">
+<button class="btn btn--primary btn--fab" id="mobile-convert-btn" disabled>Convert All</button>
+</div>
+<div class="ad-slot" style="max-width:900px;margin:0 auto"><div class="ad-placeholder"><span class="ad-label">Advertisement</span></div></div>
+
+<section style="max-width:900px;margin:0 auto;padding:0 20px 40px">
+<h2 style="font-family:var(--font-display);font-size:20px;margin-bottom:16px">Related Converters</h2>
+<div class="converter-grid" style="padding:0;margin:0">
+<a href="pdf-to-csv.html" class="converter-card"><div class="converter-card-icon">📄</div><div class="converter-card-title">PDF to CSV</div><div class="converter-card-desc">Convert PDF documents to CSV</div></a><a href="docx-to-csv.html" class="converter-card"><div class="converter-card-icon">📄</div><div class="converter-card-title">DOCX to CSV</div><div class="converter-card-desc">Convert DOCX documents to CSV</div></a><a href="odt-to-pdf.html" class="converter-card"><div class="converter-card-icon">📄</div><div class="converter-card-title">ODT to PDF</div><div class="converter-card-desc">Convert ODT documents to PDF</div></a><a href="odt-to-docx.html" class="converter-card"><div class="converter-card-icon">📄</div><div class="converter-card-title">ODT to DOCX</div><div class="converter-card-desc">Convert ODT documents to DOCX</div></a><a href="odt-to-rtf.html" class="converter-card"><div class="converter-card-icon">📄</div><div class="converter-card-title">ODT to RTF</div><div class="converter-card-desc">Convert ODT documents to RTF</div></a><a href="odt-to-txt.html" class="converter-card"><div class="converter-card-icon">📄</div><div class="converter-card-title">ODT to TXT</div><div class="converter-card-desc">Convert ODT documents to TXT</div></a>
+</div>
+</section>
+<section style="max-width:900px;margin:0 auto;padding:0 20px 60px">
+<h2 class="faq-title">FAQ</h2>
+<div class="faq-item"><p class="faq-question">How do I convert ODT to CSV?</p><p class="faq-answer">Drop your ODT file into the converter above. Make sure "CSV" is selected in the format dropdown. Click "Convert All" and then download your converted file.</p></div>
+<div class="faq-item"><p class="faq-question">Is it really free?</p><p class="faq-answer">Yes — completely free. Convium is ad-supported. No account, no file limits.</p></div>
+<div class="faq-item"><p class="faq-question">Are my files private?</p><p class="faq-answer">100% private. Files never leave your device. Everything runs locally in WebAssembly — we have no servers that touch your files.</p></div>
+<div class="faq-item"><p class="faq-question">File size limit?</p><p class="faq-answer">No server-side limit. Your browser RAM is the only constraint — modern desktops handle multi-GB files. On mobile, keep it under ~500MB.</p></div>
+<div class="faq-item"><p class="faq-question">Why do I need a local server for video/audio?</p><p class="faq-answer">Opening HTML via file:// blocks SharedArrayBuffer. Run: <code style="background:var(--bg-3);padding:2px 6px;border-radius:4px;font-family:var(--font-mono)">npx serve .</code> or use VS Code Live Server.</p></div>
+</section>
+<footer class="site-footer"><div class="footer-inner">
+<p class="footer-badge">100% client&#8209;side · No uploads · <strong>Convium by Osmium</strong></p>
+<nav class="footer-links">
+<a href="../index.html">Home</a><a href="../video/index.html">Video</a>
+<a href="../audio/index.html">Audio</a><a href="../image/index.html">Image</a><a href="../docs/index.html">Docs</a><a href="../archives/index.html">Archives</a>
+</nav>
+<p class="footer-legal">© 2025 Osmium · MIT License</p>
+</div></footer>
+<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+<script src="../app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+setTimeout(() => {
+const sel = document.getElementById('format-select');
+if (sel) {
+const t = 'csv';
+const opt = [...sel.options].find(o => o.value.toLowerCase() === t);
+if (opt) sel.value = opt.value;
+}
+}, 50);
+});
+</script>
+</body>
+</html>
