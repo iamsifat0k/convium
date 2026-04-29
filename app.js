@@ -155,16 +155,16 @@ async function initFFmpeg() {
     // ── Load FFmpeg core ────────────────────────────────────────────────────
     // With COOP/COEP headers → multithreading enabled via SharedArrayBuffer
     // Without headers → single-threaded fallback
-    const BASE = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
-    const isMultiThreadingAvailable = self.crossOriginIsolated;
-
-    console.log(`[Convium] ${isMultiThreadingAvailable ? '🚀 Multithreading' : '⚠️  Single-threaded'} mode`);
+    const CORE_BASE = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.6/dist/umd';
+    const WORKER_BASE = '/ffmpeg'; // Local path
 
     const loadConfig = {
-      coreURL: await toBlobURL(`${BASE}/ffmpeg-core.js`,   'text/javascript'),
-      wasmURL: await toBlobURL(`${BASE}/ffmpeg-core.wasm`, 'application/wasm'),
+      coreURL:   await toBlobURL(`${CORE_BASE}/ffmpeg-core.js`,       'text/javascript'),
+      wasmURL:   await toBlobURL(`${CORE_BASE}/ffmpeg-core.wasm`,     'application/wasm'),
+      workerURL: await toBlobURL(`${WORKER_BASE}/ffmpeg-core.worker.js`, 'text/javascript'),
     };
 
+await state.ffmpeg.load(loadConfig);
     // If multithreading available, try to add worker URL (falls back gracefully if unavailable)
     if (isMultiThreadingAvailable && typeof toBlobURL === 'function') {
       try {
@@ -187,6 +187,7 @@ async function initFFmpeg() {
     state.ffmpegLoading = false;
     showApp();
   }
+
 }
 
 /**
