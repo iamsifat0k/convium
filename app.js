@@ -153,7 +153,6 @@ async function initFFmpeg() {
     });
 
     // ── Load FFmpeg core ────────────────────────────────────────────────────
-<<<<<<< HEAD
     // Always use toBlobURL for the core assets to avoid worker/CORS path issues.
     const BASE = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
 
@@ -164,34 +163,6 @@ async function initFFmpeg() {
       wasmURL:   await toBlobURL(`${BASE}/ffmpeg-core.wasm`,     'application/wasm'),
       workerURL: await toBlobURL(`${BASE}/ffmpeg-core.worker.js`, 'text/javascript'),
     };
-=======
-    // Strategy:
-    //  1. If toBlobURL exists AND we are cross-origin isolated → use it
-    //     (Blob URLs bypass CORS for WASM loading)
-    //  2. Otherwise fall back to direct unpkg URLs
-    //     (works fine on HTTP/HTTPS without SharedArrayBuffer requirement
-    //      when using the single-threaded core build)
-    const BASE = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
-
-    let loadConfig;
-
-    if (typeof toBlobURL === 'function' && self.crossOriginIsolated) {
-      // Full multi-threaded path with SharedArrayBuffer
-      console.log('[Convium] Using toBlobURL (crossOriginIsolated)');
-      loadConfig = {
-        coreURL: await toBlobURL(`${BASE}/ffmpeg-core.js`,   'text/javascript'),
-        wasmURL: await toBlobURL(`${BASE}/ffmpeg-core.wasm`, 'application/wasm'),
-      };
-    } else {
-      // Direct URL fallback — single-threaded, no SharedArrayBuffer needed
-      // Works on any HTTPS host without special response headers
-      console.log('[Convium] Using direct URLs (non-isolated)');
-      loadConfig = {
-        coreURL: `${BASE}/ffmpeg-core.js`,
-        wasmURL: `${BASE}/ffmpeg-core.wasm`,
-      };
-    }
->>>>>>> 7c97526c050bb6e8839a0283bf11e47a03125117
 
     await state.ffmpeg.load(loadConfig);
 
