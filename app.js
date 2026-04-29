@@ -153,15 +153,26 @@ async function initFFmpeg() {
     });
 
     // ── Load FFmpeg core ────────────────────────────────────────────────────
-    // Always use toBlobURL for the core assets to avoid worker/CORS path issues.
+    // With COOP/COEP headers → multithreading enabled via SharedArrayBuffer
+    // Without headers → single-threaded fallback
     const BASE = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd';
+    const isMultiThreadingAvailable = self.crossOriginIsolated;
 
-    console.log('[Convium] Using toBlobURL for all core assets (CORS-safe)');
+    console.log(`[Convium] ${isMultiThreadingAvailable ? '🚀 Multithreading' : '⚠️  Single-threaded'} mode`);
 
     const loadConfig = {
       coreURL: await toBlobURL(`${BASE}/ffmpeg-core.js`,   'text/javascript'),
       wasmURL: await toBlobURL(`${BASE}/ffmpeg-core.wasm`, 'application/wasm'),
     };
+
+    // If multithreading available, try to add worker URL (falls back gracefully if unavailable)
+    if (isMultiThreadingAvailable && typeof toBlobURL === 'function') {
+      try {
+        loadConfig.workerURL = await toBlobURL(`${BASE}/ffmpeg-core.worker.js`, 'text/javascript');
+      } catch (e) {
+        console.debug('[Convium] Worker not found at CDN, using single-threaded core');
+      }
+    }
 
     await state.ffmpeg.load(loadConfig);
 
