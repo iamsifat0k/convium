@@ -115,7 +115,6 @@ async function initFFmpeg() {
   if (state.ffmpegLoaded || state.ffmpegLoading) return;
   state.ffmpegLoading = true;
 
-  // ── Warn if opened as file:// (SharedArrayBuffer is blocked by browsers) ──
   if (location.protocol === 'file:') {
     showFileProtocolWarning();
     state.ffmpegLoading = false;
@@ -124,70 +123,55 @@ async function initFFmpeg() {
   }
 
   try {
-    // ── Extract FFmpeg constructor from UMD global ──────────────────────────
-    // @ffmpeg/ffmpeg UMD exposes window.FFmpegWASM = { FFmpeg }
+    // Load FFmpeg constructor from UMD global
     const ffmpegLib = window.FFmpegWASM;
     if (!ffmpegLib || !ffmpegLib.FFmpeg) {
       throw new Error('@ffmpeg/ffmpeg UMD script not loaded — check CDN connection');
     }
     FFmpeg = ffmpegLib.FFmpeg;
 
-    // ── Extract fetchFile + toBlobURL from @ffmpeg/util UMD ────────────────
-    // @ffmpeg/util UMD exposes window.FFmpegUtil = { fetchFile, toBlobURL, ... }
+    // Load util functions from UMD global
     const utilLib = window.FFmpegUtil;
-    if (!utilLib || !utilLib.fetchFile) {
+    if (!utilLib || !utilLib.toBlobURL) {
       throw new Error('@ffmpeg/util UMD script not loaded — check CDN connection');
     }
     fetchFile = utilLib.fetchFile;
-    toBlobURL = utilLib.toBlobURL; // may be undefined in some builds — handled below
+    toBlobURL = utilLib.toBlobURL;
 
-    // ── Create FFmpeg instance ──────────────────────────────────────────────
+    // Create FFmpeg instance
     state.ffmpeg = new FFmpeg();
+    state.ffmpeg.on('log', ({ message }) => console.debug('[ffmpeg]', message));
+    state.ffmpeg.on('progress', ({ progress }) => updateCurrentFileProgress(progress));
 
-    state.ffmpeg.on('log', ({ message }) => {
-      console.debug('[ffmpeg]', message);
-    });
+    // ── Load FFmpeg core (multithreaded via jsDelivr) ───────────────────
+    const BASE = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.6/dist/umd';
 
-    state.ffmpeg.on('progress', ({ progress }) => {
-      updateCurrentFileProgress(progress);
-    });
-
-    // ── Load FFmpeg core ────────────────────────────────────────────────────
-    // With COOP/COEP headers → multithreading enabled via SharedArrayBuffer
-    // Without headers → single-threaded fallback
-    const CORE_BASE = 'https://cdn.jsdelivr.net/npm/@ffmpeg/core-mt@0.12.6/dist/umd';
-    const WORKER_BASE = '/ffmpeg'; // Local path
+    console.log('[Convium] 🚀 Loading multithreaded FFmpeg core...');
 
     const loadConfig = {
-      coreURL:   await toBlobURL(`${CORE_BASE}/ffmpeg-core.js`,       'text/javascript'),
-      wasmURL:   await toBlobURL(`${CORE_BASE}/ffmpeg-core.wasm`,     'application/wasm'),
-      workerURL: await toBlobURL(`${WORKER_BASE}/ffmpeg-core.worker.js`, 'text/javascript'),
+      coreURL:   await toBlobURL(`${BASE}/ffmpeg-core.js`,       'text/javascript'),
+      wasmURL:   await toBlobURL(`${BASE}/ffmpeg-core.wasm`,     'application/wasm'),
+      workerURL: await toBlobURL(`${BASE}/ffmpeg-core.worker.js`, 'text/javascript'),
     };
 
-await state.ffmpeg.load(loadConfig);
-    // If multithreading available, try to add worker URL (falls back gracefully if unavailable)
-    if (isMultiThreadingAvailable && typeof toBlobURL === 'function') {
-      try {
-        loadConfig.workerURL = await toBlobURL(`${BASE}/ffmpeg-core.worker.js`, 'text/javascript');
-      } catch (e) {
-        console.debug('[Convium] Worker not found at CDN, using single-threaded core');
-      }
-    }
+    // Timeout guard: prevent infinite hang
+    const loadWithTimeout = Promise.race([
+      state.ffmpeg.load(loadConfig),
+      new Promise((_, rej) => 
+        setTimeout(() => rej(new Error('FFmpeg load timed out after 30s')), 30000)
+      )
+    ]);
 
-    await state.ffmpeg.load(loadConfig);
+    await loadWithTimeout;
 
     state.ffmpegLoaded = true;
     console.log('%c[Convium] FFmpeg.wasm ready ✓', 'color:#7c6af7;font-weight:bold');
-
   } catch (err) {
     console.warn('[Convium] FFmpeg failed to load:', err.message);
-    // Images + Documents still work without FFmpeg.
-    // Video/Audio will show a friendly error if attempted.
   } finally {
     state.ffmpegLoading = false;
     showApp();
   }
-
 }
 
 /**
