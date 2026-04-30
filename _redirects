@@ -1,5 +1,0 @@
-# Serve .html files as extensionless URLs
-/* /:splat.html 200
-
-# Force HTTPS (Cloudflare Pages does this by default)
-# No action needed
