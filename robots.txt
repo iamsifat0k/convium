@@ -1,7 +1,6 @@
-User-agent: *
-Allow: /
-Sitemap: https://convium.pages.dev/sitemap.xml
+# Sitemap & Robots - Exception Rules (Must be at the TOP)
+/sitemap.xml /sitemap.xml 200
+/robots.txt /robots.txt 200
 
-# Block aggressive bots
-User-agent: AdsBot-Google
-Disallow: /
+# Existing SPA Fallback Rule (Keep this at the BOTTOM)
+/* /index.html 200
