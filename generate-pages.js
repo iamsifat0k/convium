@@ -215,6 +215,7 @@ function pageTemplate(p) {
 <link rel="stylesheet" href="${rel}style.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"${p.from} to ${p.to} Converter","description":"${p.desc}","applicationCategory":"UtilitiesApplication","offers":{"@type":"Offer","price":"0"}}</script>
 <script type="application/ld+json">
+<meta name="google-site-verification" content="U18ixf1qwM1_07xZumwc2zMoE8_AMtv8AMhuuy5ElbQ" />
 ${JSON.stringify({
   "@context": "https://schema.org",
   "@type": "FAQPage",
