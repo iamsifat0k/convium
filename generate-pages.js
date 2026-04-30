@@ -195,23 +195,59 @@ Advanced Settings
 
 /* ── 4. MAIN PAGE TEMPLATE ───────────────────────────────── */
 function pageTemplate(p) {
+  
   const rel = '../';
   const related = pages.filter(x => x.dir===p.dir && x.slug!==p.slug && (x.from===p.from||x.to===p.to)).slice(0,6);
   
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${p.from} to ${p.to} Converter – Free, No Upload | Convium</title>
-<meta name="description" content="Convert ${p.from} to ${p.to} free online. ${p.desc} 100% browser-based, no uploads, no registration.">
-<meta name="keywords" content="${p.from.toLowerCase()} to ${p.to.toLowerCase()} converter, convert ${p.from.toLowerCase()} to ${p.to.toLowerCase()}, free online ${p.from.toLowerCase()} converter, no upload">
-<link rel="canonical" href="https://convium.osmium.app/${p.dir}/${p.slug}.html">
+<title>${p.from} to ${p.to} Converter – Free & Private | Convium</title>
+<meta name="description" content="Convert ${p.from} to ${p.to} instantly in your browser. No uploads, no servers, 100% private. Free online ${p.from.toLowerCase()} to ${p.to.toLowerCase()} converter.">
+<link rel="canonical" href="https://convium.pages.dev/${p.dir}/${p.slug}.html">
+<meta property="og:url" content="https://convium.pages.dev/${p.dir}/${p.slug}.html">
 <meta property="og:title" content="${p.from} to ${p.to} – Convium">
 <meta property="og:description" content="${p.desc}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${rel}style.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"${p.from} to ${p.to} Converter","description":"${p.desc}","applicationCategory":"UtilitiesApplication","offers":{"@type":"Offer","price":"0"}}</script>
+<script type="application/ld+json">
+${JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": `How do I convert ${p.from} to ${p.to}?`, 
+      "acceptedAnswer": { "@type": "Answer", "text": `Drop your ${p.from} file into the converter above. Select "${p.to}" and click Convert All. Downloads instantly.` } },
+    { "@type": "Question", "name": "Are my files private?", 
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. Convium runs 100% in your browser via WebAssembly. Nothing is uploaded to any server." } },
+    { "@type": "Question", "name": "Is it free?", 
+      "acceptedAnswer": { "@type": "Answer", "text": "Completely free. No accounts, no limits, no watermarks." } }
+  ]
+})}
+</script>
+<script type="application/ld+json">
+${JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": `https://convium.osmium.app/index.html` },
+    { "@type": "ListItem", "position": 2, "name": `${p.dir.charAt(0).toUpperCase() + p.dir.slice(1)}`, "item": `https://convium.osmium.app/${p.dir}/index.html` },
+    { "@type": "ListItem", "position": 3, "name": `${p.from} to ${p.to}` }
+  ]
+})}
+</script>
+<!-- Preconnect to critical origins -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
+<!-- Preload critical font & defer non-critical scripts -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap" as="style">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap"></noscript>
 </head>
 <body>
 ${header(p, rel)}
@@ -250,11 +286,11 @@ ${related.map(r=>`<a href="${r.slug}.html" class="converter-card"><div class="co
 </nav>
 <p class="footer-legal">© 2025 Osmium · MIT License</p>
 </div></footer>
-<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
-<script src="${rel}app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js" defer></script>
+<script src="${rel}app.js" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 setTimeout(() => {
@@ -282,3 +318,14 @@ pages.forEach(p => {
 });
 
 console.log(`\n✅ Successfully generated ${pages.length} pages across ${Object.keys(categories).length} categories.`);
+// ── 6. GENERATE SITEMAP ───────────────────────────────────
+const baseUrl = 'https://convium.pages.dev';
+const sitemap = [
+  '<?xml version="1.0" encoding="UTF-8"?>',
+  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+  ...pages.map(p => `  <url><loc>${baseUrl}/${p.dir}/${p.slug}.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>`),
+  `  <url><loc>${baseUrl}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
+  '</urlset>'
+].join('\n');
+fs.writeFileSync(path.join(__dirname, 'sitemap.xml'), sitemap);
+console.log('✅ sitemap.xml generated');

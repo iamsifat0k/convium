@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Sitemap: https://convium.pages.dev/sitemap.xml
+
+# Block aggressive bots
+User-agent: AdsBot-Google
+Disallow: /

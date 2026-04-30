@@ -9,7 +9,15 @@
   <meta property="og:title" content="Convium – Universal File Converter" />
   <meta property="og:description" content="Convert any file, entirely in your browser. No server. No uploads. Powered by WebAssembly." />
   <meta property="og:type" content="website" />
-  <link rel="canonical" href="https://convium.osmium.app/" />
+  <link rel="canonical" href="https://convium.pages.dev/" />
+  <meta property="og:url" content="https://convium.pages.dev/" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <!-- Preload critical font & defer non-critical scripts -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap"></noscript>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,7 +25,7 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="style.css" />
-
+  
   <!-- Structured Data -->
   <script type="application/ld+json">
   {
@@ -504,17 +512,17 @@
 <!-- ═══════════════════════════════════════════════
      SCRIPTS — FFmpeg UMD (no Worker CORS issues)
 ═══════════════════════════════════════════════ -->
-<script src="/ffmpeg/ffmpeg.js"></script>
-<script src="/ffmpeg/ffmpeg-util.js"></script>
+<script src="/ffmpeg/ffmpeg.js" defer></script>
+<script src="/ffmpeg/ffmpeg-util.js" defer></script>
 
 <!-- JSZip -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
 
 <!-- browser-image-compression -->
-<script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js" defer></script>
 
 <!-- Main App -->
-<script src="app.js"></script>
+<script src="app.js" defer></script>
 
 <!-- AdSense (replace with real publisher ID) -->
 <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXX" crossorigin="anonymous"></script> -->
