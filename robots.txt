@@ -1,7 +1,3 @@
-# ── Static Assets Exception (MUST BE AT THE TOP) ──
-/sitemap.xml /sitemap.xml 200
-/robots.txt /robots.txt 200
-/favicon.ico /favicon.ico 200
-
-# ── SPA Fallback (MUST BE AT THE BOTTOM) ──
-/* /index.html 200
+User-agent: *
+Allow: /
+Sitemap: https://convium.pages.dev/sitemap.xml
