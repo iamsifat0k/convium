@@ -4,7 +4,7 @@ Sitemap: https://convium.pages.dev/sitemap.xml
 
 # Block aggressive bots but allow Google
 User-agent: AdsBot-Google
-Disallow: /
+Allow: /
 
 User-agent: Googlebot
 Allow: /
