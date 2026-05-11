@@ -319,19 +319,53 @@ pages.forEach(p => {
 });
 
 console.log(`\n✅ Successfully generated ${pages.length} pages across ${Object.keys(categories).length} categories.`);
-/* ── 6. GENERATE SITEMAP ─────────────────────────────────── */
+/* ── 6. GENERATE SITEMAP INDEX (SPLIT BY CATEGORY) ──────── */
 const baseUrl = 'https://convium.pages.dev';
-const sitemapEntries = [
-  `<url><loc>${baseUrl}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
-  ...pages.map(p => 
-    `<url><loc>${baseUrl}/${p.dir}/${p.slug}.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>`
-  )
-];
 
-const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
+// Group pages by category
+const byCategory = {};
+pages.forEach(p => {
+  if (!byCategory[p.dir]) byCategory[p.dir] = [];
+  byCategory[p.dir].push(p);
+});
+
+// Generate individual sitemaps for each category
+const sitemapFiles = [];
+for (const [cat, catPages] of Object.entries(byCategory)) {
+  const urls = catPages.map(p => 
+    `  <url><loc>${baseUrl}/${p.dir}/${p.slug}.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>`
+  ).join('\n');
+  
+  const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${sitemapEntries.join('\n')}
+${urls}
+</urlset>`;
+  
+  const fileName = `sitemap-${cat}.xml`;
+  fs.writeFileSync(path.join(__dirname, fileName), sitemapContent);
+  sitemapFiles.push(fileName);
+  console.log(`✅ Generated ${fileName} (${catPages.length} URLs)`);
+}
+
+// Generate main sitemap index
+const indexSitemaps = sitemapFiles.map(f => 
+  `  <sitemap><loc>${baseUrl}/${f}</loc></sitemap>`
+).join('\n');
+
+const indexContent = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${indexSitemaps}
+  <sitemap><loc>${baseUrl}/sitemap-main.xml</loc></sitemap>
+</sitemapindex>`;
+
+fs.writeFileSync(path.join(__dirname, 'sitemap.xml'), indexContent);
+console.log('✅ Generated sitemap.xml (index)');
+
+// Also generate homepage sitemap
+const homepageSitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>${baseUrl}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
 </urlset>`;
 
-fs.writeFileSync(path.join(__dirname, 'sitemap.xml'), sitemapContent);
-console.log('✅ sitemap.xml generated at root');
+fs.writeFileSync(path.join(__dirname, 'sitemap-main.xml'), homepageSitemap);
+console.log('✅ Generated sitemap-main.xml');
